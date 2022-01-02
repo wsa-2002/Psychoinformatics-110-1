@@ -1,0 +1,61 @@
+<script src="http://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+var order = new Array(1,2,3,4);
+var current = 0; //current trial
+var correct = 0;
+var answers = ['M', 'M', 'F']
+
+
+
+$(document).ready(function(){
+  ShowTrial(current);
+});
+
+function ShowTrial(t) {
+  document.body.innerHTML = ''
+  //document.write('Please indicate the sex of this face:')
+  for(let i = 0; i < order.length; i++){
+    if(i < 3){
+      document.write(`\
+      <div class="page" id="page${i + 1}" style="display: none;">\
+	  <h3>Please indicate the sex of this face:<\h3>\
+      <img src="${i + 1}.jpg"><br>\
+      <input type=radio name=f${i + 1} value=M > M\
+      <input type=radio name=f${i + 1} value=F > F <br>\
+      <a href="javascript:NextTrial(${i + 1})">Next</a> \
+      <span class="progress"></span>\
+      </div>\
+      `)
+    }
+    else{
+      document.write(`
+      <div class="page" id="page4" style="display: none;">
+      <h3>All done! Thanks!</h3>
+      <h3>Your accuracy rate: ${parseInt(correct) * 100/ answers.length}%</h3>
+      </div>`)
+    }
+  }
+$("#page" + order[t]).show();
+var N = t+1; //counting from 1
+$(".progress").text('('+N+'/'+order.length+')');
+}
+
+function NextTrial(index) {
+ try{
+	 ans = document.querySelector(`input[name=f${index}]:checked`).value;
+	 console.log('here')
+	 if (ans === answers[index - 1]){
+	   correct++;
+	 }
+ }catch(e){
+	correct += 0
+ }
+ $("#page" + order[current]).hide();
+ current++;
+ ShowTrial(current);
+}
+
+</script>
+<style> .page {display: none;} </style> 
+Please indicate the sex of this face:
